@@ -44,11 +44,16 @@ import "@ionic/react/css/display.css";
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import "@ionic/react/css/palettes/dark.system.css";
+// import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./theme/main.css";
 import Dashboard from "./pages/Dashboard";
+import StatusBar from "./components/StatusBar";
+import MainLayout from "./components/MainLayout";
+import TicketConversation from "./components/tickets/TicketConversation";
+import Conversation from "./pages/Conversation";
 
 setupIonicReact();
 
@@ -57,30 +62,11 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/" component={Dashboard} />
-          <Route path="/home" component={Dashboard} />
-          <Route path="/contact" component={Dashboard} />
-          <Route path="/property" component={Dashboard} />
-          <Route path="/properties" component={Dashboard} />
-          <Route path="/myproperties" component={Dashboard} />
-          <Route path="/book" component={Dashboard} />
-          <Route path="/profile" component={Dashboard} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/tickets/open" component={Dashboard} />
+          <Route exact path="/tickets/archived" component={Dashboard} />
+          <Route exact path="/ticket/:id" component={TicketConversation} />
+          <Redirect exact from="/" to="/tickets/open" />
         </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon aria-hidden="true" icon={logoDropbox} />
-            {/* <IonLabel>Home</IonLabel> */}
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={heartOutline} />
-            {/* <IonLabel>Likes</IonLabel> */}
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={personOutline} />
-            {/* <IonLabel>Profile</IonLabel> */}
-          </IonTabButton>
-        </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>

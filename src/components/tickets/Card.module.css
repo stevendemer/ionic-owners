@@ -1,0 +1,123 @@
+.card {
+  width: 100%;
+}
+
+.card_row {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.left_col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket_date {
+  display: flex;
+  align-items: flex-end;
+  font-size: small !important;
+}
+
+.text_row {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.left_row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.content_col {
+  display: flex;
+  flex-direction: column;
+  text-overflow: ellipsis;
+  align-items: flex-start;
+}
+
+.card_label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ticket_id {
+  padding-right: 6px;
+  color: black;
+  font-weight: 800 !important;
+}
+
+.ticket_date {
+  color: gray;
+}
+
+.title {
+  font-weight: 800 !important;
+}
+
+.description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%; /* Ensure the description takes full width */
+  font-size: small !important;
+}
+
+.user_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.user_row {
+  display: flex;
+  align-items: center;
+}
+
+.user_info {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.profile_image {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  text-align: center;
+  margin-right: 6px;
+}
+
+.location {
+  margin-left: auto;
+}
+
+.bottom_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.username {
+  font-size: small;
+  font-weight: bold;
+}
+
+.card_item {
+  display: flex;
+  align-items: center;
+}
+
+.card_label {
+  flex: 1;
+}
+
+.archived {
+  color: var(--ion-color-disabled);
+}

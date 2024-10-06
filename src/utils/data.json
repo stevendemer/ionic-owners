@@ -1,0 +1,136 @@
+{
+  "tickets": [
+    {
+      "id": "000001",
+      "date": "2024-08-26T09:00:00Z",
+      "status": "open",
+      "title": "Floods in Bathroom",
+      "description": "The bathroom was full of water and I tried to...",
+      "user": {
+        "name": "Nikos Papadoyiannis",
+        "location": "Syros",
+        "profile_image": "assets/icon-only.png"
+      },
+      "conversation": [
+        {
+          "message_id": "msg_001",
+          "from": "Nikos Papadoyiannis",
+          "message": "Hey John. I'll try to inspect the problem by tomorrow. I'll contact you.",
+          "timestamp": "2024-08-26T10:00:00Z"
+        },
+        {
+          "message_id": "msg_002",
+          "from": "John",
+          "message": "Ok. I'll wait until tomorrow.",
+          "timestamp": "2024-08-26T10:10:00Z"
+        },
+        {
+          "message_id": "msg_003",
+          "from": "Nikos Papadoyiannis",
+          "message": "Everything went as planned. The bathroom is ready.",
+          "timestamp": "2024-08-27T09:00:00Z"
+        }
+      ],
+      "archived": false
+    },
+    {
+      "id": "000002",
+      "date": "2024-08-26T09:00:00Z",
+      "status": "archived",
+      "title": "Floods in Bathroom",
+      "description": "The bathroom was full of water and I tried to...",
+      "user": {
+        "name": "Nikos Papadoyiannis",
+        "location": "Syros",
+        "profile_image": "assets/icon-only.png"
+      },
+      "conversation": [
+        {
+          "message_id": "msg_004",
+          "from": "Nikos Papadoyiannis",
+          "message": "Hey John. I'll try to inspect the problem by tomorrow. I'll contact you.",
+          "timestamp": "2024-08-26T10:00:00Z"
+        },
+        {
+          "message_id": "msg_005",
+          "from": "John",
+          "message": "Ok. I'll wait until tomorrow.",
+          "timestamp": "2024-08-26T10:10:00Z"
+        },
+        {
+          "message_id": "msg_006",
+          "from": "Nikos Papadoyiannis",
+          "message": "Everything went as planned. The bathroom is ready.",
+          "timestamp": "2024-08-27T09:00:00Z"
+        }
+      ],
+      "archived": true
+    },
+    {
+      "id": "000003",
+      "date": "2024-08-26T09:00:00Z",
+      "status": "open",
+      "title": "Floods in Bathroom",
+      "description": "The bathroom was full of water and I tried to...",
+      "user": {
+        "name": "Nikos Papadoyiannis",
+        "location": "Syros",
+        "profile_image": "assets/icon-only.png"
+      },
+      "conversation": [
+        {
+          "message_id": "msg_001",
+          "from": "Nikos Papadoyiannis",
+          "message": "Hey John. I'll try to inspect the problem by tomorrow. I'll contact you.",
+          "timestamp": "2024-08-26T10:00:00Z"
+        },
+        {
+          "message_id": "msg_002",
+          "from": "John",
+          "message": "Ok. I'll wait until tomorrow.",
+          "timestamp": "2024-08-26T10:10:00Z"
+        },
+        {
+          "message_id": "msg_003",
+          "from": "Nikos Papadoyiannis",
+          "message": "Everything went as planned. The bathroom is ready.",
+          "timestamp": "2024-08-27T09:00:00Z"
+        }
+      ],
+      "archived": false
+    },
+    {
+      "id": "000004",
+      "date": "2024-08-26T09:00:00Z",
+      "status": "archived",
+      "title": "Floods in Bathroom",
+      "description": "The bathroom was full of water and I tried to...",
+      "user": {
+        "name": "Nikos Papadoyiannis",
+        "location": "Syros",
+        "profile_image": "assets/icon-only.png"
+      },
+      "conversation": [
+        {
+          "message_id": "msg_004",
+          "from": "Nikos Papadoyiannis",
+          "message": "Hey John. I'll try to inspect the problem by tomorrow. I'll contact you.",
+          "timestamp": "2024-08-26T10:00:00Z"
+        },
+        {
+          "message_id": "msg_005",
+          "from": "John",
+          "message": "Ok. I'll wait until tomorrow.",
+          "timestamp": "2024-08-26T10:10:00Z"
+        },
+        {
+          "message_id": "msg_006",
+          "from": "Nikos Papadoyiannis",
+          "message": "Everything went as planned. The bathroom is ready.",
+          "timestamp": "2024-08-27T09:00:00Z"
+        }
+      ],
+      "archived": true
+    }
+  ]
+}

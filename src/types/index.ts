@@ -14,7 +14,7 @@ export interface Message {
 export interface Ticket {
   id: string;
   date: string;
-  status: "open" | "archived";
+  status: string;
   title: string;
   description: string;
   user: User;
