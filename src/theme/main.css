@@ -8,6 +8,24 @@ ion-label {
   text-transform: capitalize;
 }
 
+ion-grid {
+  --ion-grid-width: 350px;
+  --ion-grid-columns: 8;
+  --ion-grid-column-padding: 32px;
+
+  --ion-grid-padding-xs: 4px;
+  --ion-grid-padding-sm: 8px;
+  --ion-grid-padding-md: 12px;
+  --ion-grid-padding-lg: 16px;
+  --ion-grid-padding-xl: 20px;
+
+  --ion-grid-column-padding-xs: 4px;
+  --ion-grid-column-padding-sm: 8px;
+  --ion-grid-column-padding-md: 12px;
+  --ion-grid-column-padding-lg: 16px;
+  --ion-grid-column-padding-xl: 20px;
+}
+
 h1 {
   font-size: 28px !important;
   line-height: 34px !important;
@@ -62,17 +80,12 @@ p {
 .message-timestamp {
   font-size: 15px;
   color: var(--ion-color-disabled-dark) !important;
-  padding-left: 16px;
 }
 
 .description-container {
   display: flex;
   align-items: center;
   margin-left: 16px;
-}
-
-.conversation-container {
-  background-color: var(--ion-color-light) !important;
 }
 
 .ticket-user {
@@ -93,12 +106,11 @@ p {
 
 ion-input.message {
   /* --border-radius: 9px; */
-  background-color: var(--ion-color-light) !important;
+  /* background-color: var(--ion-color-light) !important; */
   --placeholder-opacity: 0.5;
 }
 
 .message-input {
-  /* background-color: var(--ion-color-light) !important; */
   margin: 12px;
   padding: 12px;
   border-radius: 16px;
@@ -110,8 +122,11 @@ ion-input.message {
   font-weight: 300 !important;
 }
 
-ion-list.messages {
+/* ion-list.messages {
   background-color: var(--ion-color-light) !important;
+} */
+
+ion-list.messages {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
@@ -125,27 +140,32 @@ ion-item.archive-message {
 }
 
 ion-item.chat-message {
-  border-radius: 12px !important;
+  border-radius: 25px !important;
   max-width: 80%;
-}
-
-ion-item.chat-message > * {
-  margin: 16px 0;
+  padding: 10px;
 }
 
 .left-message {
-  margin-left: auto;
-  text-align: right;
+  margin-right: auto;
+  text-align: left;
+  border-radius: 12px !important;
 }
 
 .right-message {
-  margin-right: auto;
-  text-align: left;
+  margin-left: auto;
+  text-align: right;
+  border-radius: 12px !important;
 }
 
 ion-input.message-input {
   border-radius: 99px !important;
   padding: 16px;
-  border: 1px solid black;
   width: 100%;
+}
+
+/* handles long word overflow */
+ion-text.message-item {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }

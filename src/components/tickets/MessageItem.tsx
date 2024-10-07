@@ -8,6 +8,7 @@ import {
   IonLabel,
   IonPage,
   IonRow,
+  IonText,
   IonTitle,
 } from "@ionic/react";
 import { Message } from "../../types";
@@ -19,7 +20,7 @@ export default function MessageItem({
   message: Message;
   isUser?: boolean;
 }) {
-  console.log("message is ", message);
-
-  return <div className="p2 ion-text-wrap">{message.message}</div>;
+  return (
+    <IonText className="ion-text-wrap message-item">{message.message}</IonText>
+  );
 }

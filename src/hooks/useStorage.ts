@@ -55,9 +55,16 @@ export default function useStorage() {
       setTickets(newTickets);
 
       await store?.set("tickets", newTickets);
+
+      console.log("new ticket is ", newTicket);
     } else {
       throw new Error("No ticket found !");
     }
+  };
+
+  // read data from state and store in the storage
+  const syncTickets = async () => {
+    await store?.set("tickets", tickets);
   };
 
   const updateTicket = async (ticketId: string, ticket: Partial<Ticket>) => {
