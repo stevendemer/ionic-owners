@@ -27,7 +27,7 @@ import {
 } from "@ionic/react";
 import { Children, useCallback, useEffect, useState } from "react";
 import { Ticket } from "../types";
-import { arrowBackOutline } from "ionicons/icons";
+import { addOutline, arrowBackOutline } from "ionicons/icons";
 import TicketCard from "../components/tickets/Card";
 import { useLocation } from "react-router";
 import useStorage from "../hooks/useStorage";
@@ -109,19 +109,27 @@ export default function Dashboard() {
   return (
     <IonPage>
       <IonToolbar>
-        <IonButtons slot="start">
-          <IonButton
-            style={{
-              "--color": router.canGoBack()
-                ? "var(--ion-color-text)"
-                : "var(--ion-color-disabled)",
-            }}
-            onClick={() => router.goBack()}
-            slot="icon-only"
-          >
-            <IonIcon icon={arrowBackOutline} />
-          </IonButton>
-        </IonButtons>
+        <IonItem lines="none">
+          <IonButtons slot="start">
+            <IonButton
+              style={{
+                "--color": router.canGoBack()
+                  ? "var(--ion-color-text)"
+                  : "var(--ion-color-disabled)",
+              }}
+              onClick={() => router.goBack()}
+              slot="icon-only"
+            >
+              <IonIcon icon={arrowBackOutline} />
+            </IonButton>
+          </IonButtons>
+        </IonItem>
+        <IonItem lines="none" className="ion-text-start">
+          <IonLabel>
+            <h2>House manager assistance</h2>
+          </IonLabel>
+          <IonIcon color="primary" icon={addOutline} />
+        </IonItem>
       </IonToolbar>
       <IonContent>
         <IonSegment

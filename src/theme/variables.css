@@ -2,12 +2,12 @@
   font-family: "Manrope", system-ui;
   font-optical-sizing: auto;
   font-weight: normal;
-  src: url("../../public//fonts/Manrope-Regular.ttf") format("ttf");
+  src: url("../../public/fonts/Manrope-Regular.ttf") format("ttf");
 }
 
 @font-face {
   font-family: "Manrope", system-ui;
-  src: url("../../public//fonts/Manrope-Bold.ttf") format("ttf");
+  src: url("../../public/fonts/Manrope-Bold.ttf") format("ttf");
   font-weight: bold;
   font-style: normal;
 }
@@ -19,13 +19,13 @@
 :root {
   --ion-grid-padding: 20px !important;
 
-  --ion-background-color: #f6feed !important;
+  --ion-background-color: #fbf8f1 !important;
   --ion-background-color-rgb: 252, 252, 252 !important;
 
   --ion-color-primary: #cda36a !important;
   --ion-color-primary-rgb: 29, 29, 27 !important;
   /* text */
-  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-contrast: #352015 !important;
   --ion-color-primary-contrast-rgb: 255, 255, 255 !important;
 
   --ion-color-primary-shade: #1a1a18 !important;
@@ -46,15 +46,15 @@
   --ion-color-light: #ffff !important;
   --ion-color-light-rgb: 255, 255, 255 !important;
   --ion-color-light-contrast: #000000 !important;
-  /* --ion-color-light-contrast-rgb: 0, 0, 0 !important; */
-  /* --ion-color-light-shade: #e0e0e0 !important; */
-  /* --ion-color-light-tint: #ffff !important; */
+  --ion-color-light-contrast-rgb: 0, 0, 0 !important;
+  --ion-color-light-shade: #e0e0e0 !important;
+  --ion-color-light-tint: #ffff !important;
   --ion-text-color: #352015 !important;
   /* --ion-tab-bar-background: #f6eedd !important; */
   --ion-tab-bar-background-focused: black !important;
   /* --ion-tab-bar-color-selected: #cda36a !important; */
-  --ion-color-disabled: #dbdbdb !important;
-  --ion-color-disabled-dark: #b2b2b2 !important;
+  /* --ion-color-medium: #dbdbdb !important; */
+  --ion-color-medium: #b2b2b2 !important;
   --ion-color-danger: #ce1d1d !important;
 
   /* --ion-toolbar-segment-color: #352015 !important;
@@ -62,7 +62,6 @@
   --ion-segment-button-color: #ffff !important;
  */
   --ion-font-family: "Manrope", system-ui !important;
-  --ion-tab-bar-color-selected: green !important;
 
   --ion-segment-button-font-weight: 600 !important;
 }
@@ -80,7 +79,7 @@ ion-segment-button {
 
 ion-button {
   /* --background: var(--ion-color-primary); */
-  --color: var(--ion-color-primary);
+  /* --color: var(--ion-color-primary);
   --color-hover: var(--ion-text-color);
   --color-activated: var(--ion-text-color);
   --color-focused: var(--ion-color-primary-tint);
@@ -89,7 +88,7 @@ ion-button {
   --background-focused: var(--ion-color-primary);
   --background-activated-opacity: 0.5;
   --background-focused-opacity: 0.5;
-
+ */
   --padding-start: 12px;
   --padding-end: 12px;
   --padding-top: 12px;
@@ -108,10 +107,25 @@ ion-title {
 }
 
 ion-badge {
-  padding: 8px 16px;
-  border-radius: 9px;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
 ion-item {
   border-radius: 12px !important;
+}
+
+ion-toolbar {
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+  border-color: var(--ion-color-primary);
+  box-shadow: none;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+ion-grid {
+  --ion-grid-width: 350px;
+  --ion-grid-columns: 8;
+  --ion-grid-column-padding: 16px;
 }

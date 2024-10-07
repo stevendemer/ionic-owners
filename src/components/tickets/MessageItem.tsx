@@ -14,14 +14,22 @@ import { Message } from "../../types";
 
 export default function MessageItem({
   message,
-  role,
+  isUser,
 }: {
   message: Message;
-  role: string;
+  isUser?: boolean;
 }) {
+  const role = message.from === "user" ? "end" : "start";
+
   return (
-    <IonItem className=" message" lines="none" color={"primary"}>
-      <IonLabel>{message.message}</IonLabel>
+    <IonItem
+      className={`ion-padding ion-text-wrap chat-message  ${
+        isUser ? "left-message" : "right-message"
+      }`}
+      lines="none"
+      color={isUser ? "light" : ""}
+    >
+      <div className="p2">{message.message}</div>
     </IonItem>
   );
 }

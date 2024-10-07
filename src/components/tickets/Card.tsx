@@ -22,9 +22,7 @@ import {
   chatbubbleEllipses,
   chatbubbleEllipsesOutline,
   chevronForward,
-  locationOutline,
 } from "ionicons/icons";
-import { format } from "date-fns";
 import styles from "./Card.module.css";
 import { formatTime } from "../../utils/helpers";
 
@@ -77,11 +75,12 @@ export default function TicketCard({
               slot="start"
               icon={chatbubbleEllipsesOutline}
               size="large"
-              className={isArchived ? styles.archived : ""}
+              // className={isArchived ? styles.archived : ""}
+              color={isArchived ? "medium" : ""}
             />
           </IonButton>
-          <h3 className={styles.ticket_id}>{id}</h3>
-          <p className={styles.ticket_date}>{formattedTimestamp}</p>
+          <h2 className={styles.ticket_id}>&#35;{id}</h2>
+          <div className="date-subheader">{formattedTimestamp}</div>
         </div>
         <h5 className={styles.title}>{title}</h5>
         <p className={styles.description}>{description}</p>

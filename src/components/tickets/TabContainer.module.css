@@ -25,7 +25,6 @@
 
 .segmentButton.ion-segment-button-checked {
   font-weight: bold;
-  color: var(--ion-color-light-contrast) !important;
 }
 
 .segment {
