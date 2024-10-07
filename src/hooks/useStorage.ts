@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Ticket } from "../types";
+import { Message, Ticket } from "../types";
 import { Storage, Drivers } from "@ionic/storage";
 import { ticket } from "ionicons/icons";
 
@@ -18,14 +18,17 @@ export default function useStorage() {
       const store = await newStore.create();
       setStore(store);
 
-      const response = await fetch("/src/utils/data.json");
-      const data = await response.json();
+      let value = await store.get("tickets");
 
-      await store.set("tickets", data.tickets);
+      if (!value) {
+        const response = await fetch("/src/utils/data.json");
+        const data = await response.json();
 
-      if (data) {
-        setTickets(data.tickets);
+        await store.set("tickets", data.tickets);
+        value = data.tickets;
       }
+
+      setTickets(value);
     };
     initStorage();
   }, []);
@@ -36,6 +39,25 @@ export default function useStorage() {
       store?.set("tickets", updatedTickets); // Store the updated tickets list
       return updatedTickets; // Update state with the new tickets
     });
+  };
+
+  const addMessage = async (ticketId: string, message: Message) => {
+    const ticket = tickets.find((t) => t.id === ticketId);
+
+    if (ticket) {
+      let newTicket: Ticket = {
+        ...ticket,
+        conversation: [...ticket.conversation, message], // append message to conv array
+      };
+
+      let newTickets = tickets.map((t) => (t.id === ticketId ? newTicket : t));
+
+      setTickets(newTickets);
+
+      await store?.set("tickets", newTickets);
+    } else {
+      throw new Error("No ticket found !");
+    }
   };
 
   const updateTicket = async (ticketId: string, ticket: Partial<Ticket>) => {
@@ -102,5 +124,6 @@ export default function useStorage() {
     archiveTicket,
     updateTicket,
     emptyTickets,
+    addMessage,
   };
 }

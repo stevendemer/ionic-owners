@@ -19,17 +19,7 @@ export default function MessageItem({
   message: Message;
   isUser?: boolean;
 }) {
-  const role = message.from === "user" ? "end" : "start";
+  console.log("message is ", message);
 
-  return (
-    <IonItem
-      className={`ion-padding ion-text-wrap chat-message  ${
-        isUser ? "left-message" : "right-message"
-      }`}
-      lines="none"
-      color={isUser ? "light" : ""}
-    >
-      <div className="p2">{message.message}</div>
-    </IonItem>
-  );
+  return <div className="p2 ion-text-wrap">{message.message}</div>;
 }

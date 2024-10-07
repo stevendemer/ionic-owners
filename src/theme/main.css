@@ -125,9 +125,12 @@ ion-item.archive-message {
 }
 
 ion-item.chat-message {
-  border-radius: 25px !important;
-  width: auto;
-  max-width: 320px;
+  border-radius: 12px !important;
+  max-width: 80%;
+}
+
+ion-item.chat-message > * {
+  margin: 16px 0;
 }
 
 .left-message {

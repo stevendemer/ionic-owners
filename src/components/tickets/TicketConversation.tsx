@@ -21,7 +21,7 @@ import {
 import { Message, Ticket } from "../../types";
 import { RouteComponentProps, useParams } from "react-router";
 import useStorage from "../../hooks/useStorage";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import MessageItem from "./MessageItem";
 import {
   archiveOutline,
@@ -35,23 +35,43 @@ import {
   sendOutline,
 } from "ionicons/icons";
 import { formatTime } from "../../utils/helpers";
+import { v4 as uuidv4 } from "uuid";
 
 export default function TicketConversation() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [ticket, setTicket] = useState<Ticket>();
-  const { getTicket, tickets } = useStorage();
+  const { getTicket, tickets, addMessage } = useStorage();
   const { id } = useParams<{ id: string }>();
-
-  console.log("fetched ticket with id ", ticket);
+  const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    async function getTicket() {
+    async function fetchMessages() {
       const ticket = tickets.find((t) => t.id === id);
+      setMessages(ticket?.conversation || []);
       setTicket(ticket);
     }
 
-    getTicket();
-  }, [id, tickets]);
+    fetchMessages();
+  }, [tickets]);
+
+  // event handler
+  const handleNewMessage = async () => {
+    if (newMessage.trim() === "") return;
+
+    const message: Message = {
+      message_id: uuidv4(),
+      from: "John", // username of current user
+      message: newMessage,
+      timestamp: new Date().toISOString(),
+    };
+
+    if (ticket) {
+      // trigger render
+      await addMessage(id, message);
+      setMessages((prev) => [...prev, message]);
+      setNewMessage("");
+    }
+  };
 
   return (
     <IonPage>
@@ -108,13 +128,21 @@ export default function TicketConversation() {
         </div>
       </IonToolbar>
       <IonContent color="light">
-        <IonList className="messages ion-padding-horizontal" lines="none">
+        <IonList className="messages" lines="none">
           {ticket?.conversation.map((message) => (
-            <MessageItem
-              isUser={message.from === "John"}
+            <IonItem
+              className={`chat-message ion-margin ${
+                message.from === "John" ? "ion-text-start" : "ion-text-end"
+              }`}
               key={message.message_id}
-              message={message}
-            />
+              color={message.from === "John" ? "" : "light"}
+            >
+              <MessageItem
+                isUser={message.from === "John"}
+                key={message.message_id}
+                message={message}
+              />
+            </IonItem>
           ))}
         </IonList>
       </IonContent>
@@ -127,11 +155,24 @@ export default function TicketConversation() {
       ) : (
         <IonItem color="light" lines="none">
           <IonInput
-            color="light"
-            className="message-input"
+            autocorrect="on"
+            debounce={400}
+            inputMode="text"
+            maxlength={100}
+            minlength={2}
+            spellCheck
+            autoFocus
+            onIonChange={(e) => setNewMessage(e.detail.value!)}
+            value={newMessage}
+            fill="outline"
             placeholder="Write a reply"
           />
-          <IonButton size="large" fill="clear" slot="end">
+          <IonButton
+            onClick={handleNewMessage}
+            size="large"
+            fill="clear"
+            slot="end"
+          >
             <IonIcon icon={sendOutline} />
           </IonButton>
         </IonItem>
