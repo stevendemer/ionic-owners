@@ -170,7 +170,6 @@ ion-card {
 
 ion-text.timestamp {
   font-size: small;
-  color: gray;
 }
 
 /* handles long word overflow */

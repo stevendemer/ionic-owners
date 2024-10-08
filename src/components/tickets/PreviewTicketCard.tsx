@@ -79,7 +79,7 @@ export default function PreviewTicketCard({
             <IonCol className="ion-padding-start">
               <IonItem className="ion-no-padding ion-no-margin" lines="none">
                 <h3>&#35;{id}</h3>
-                <IonText className="timestamp ion-padding-start">
+                <IonText color="medium" className="timestamp ion-padding-start">
                   {formattedTimestamp}
                 </IonText>
               </IonItem>

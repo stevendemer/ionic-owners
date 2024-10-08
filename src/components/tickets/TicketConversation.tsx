@@ -31,10 +31,13 @@ import MessageItem from "./MessageItem";
 import {
   archiveOutline,
   chatbubbleEllipsesOutline,
+  checkmarkOutline,
   chevronDownOutline,
   chevronUpOutline,
   paperPlaneOutline,
+  repeatOutline,
   sync,
+  syncOutline,
 } from "ionicons/icons";
 import { formatTime } from "../../utils/helpers";
 import { v4 as uuidv4 } from "uuid";
@@ -110,11 +113,18 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
                   >
                     {ticket?.date && formatTime(ticket?.date)}
                   </IonText>
+                  <IonButton fill="clear" slot="end" size="large">
+                    <IonIcon
+                      icon={ticket.archived ? syncOutline : checkmarkOutline}
+                      size="large"
+                      color="primary"
+                    />
+                  </IonButton>
                 </IonItem>
                 <IonItem className="ion-no-padding" lines="none">
                   <IonButton size="large" slot="start" fill="clear">
                     <IonIcon
-                      icon={ticket?.archived ? archiveOutline : sync}
+                      icon={ticket?.archived ? archiveOutline : repeatOutline}
                     ></IonIcon>
                   </IonButton>
                   <h3 className="ion-text-capitalize">
