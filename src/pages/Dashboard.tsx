@@ -21,6 +21,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonActionSheet,
   useIonRouter,
   useIonViewDidEnter,
   useIonViewDidLeave,
@@ -36,13 +37,16 @@ import PreviewTicketCard from "../components/tickets/PreviewTicketCard";
 import TicketConversation from "../components/tickets/TicketConversation";
 
 export default function Dashboard() {
+  const modalRef = useRef<HTMLIonModalElement>(null);
+  const page = useRef(null);
+
   const [selectedFragment, setSelectedSegment] = useState<"open" | "archived">(
     "open"
   );
   const location = useLocation();
   const router = useIonRouter();
-  const { createTicket, tickets: savedTickets } = useStorage();
-  const modalRef = useRef<HTMLIonModalElement>(null);
+  const { createTicket, tickets: savedTickets, syncTickets } = useStorage();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
@@ -71,8 +75,13 @@ export default function Dashboard() {
     setIsModalOpen(true);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    syncTickets();
+  };
+
   return (
-    <IonPage>
+    <IonPage ref={page}>
       <IonToolbar>
         <IonGrid>
           <IonRow className="ion-justify-content-center">
@@ -105,87 +114,118 @@ export default function Dashboard() {
         </IonGrid>
       </IonToolbar>
       <IonContent>
-        <IonSegment
-          value={selectedFragment}
-          onIonChange={(e) =>
-            handleSegmentChange(e.detail.value as "open" | "archived")
-          }
-        >
-          <IonSegmentButton value="open">
-            <IonLabel
-              style={{
-                "font-weight": selectedFragment === "open" ? "800" : "normal",
-                "--color":
-                  selectedFragment === "open"
-                    ? "var(--ion-text-color) !important"
-                    : "var(--ion-color-disabled-dark)",
-              }}
-            >
-              Open Tickets
-            </IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="archived">
-            <IonLabel
-              style={{
-                "font-weight":
-                  selectedFragment === "archived" ? "800" : "normal",
-                "--color":
-                  selectedFragment === "archived"
-                    ? "var(--ion-text-color) !important"
-                    : "var(--ion-color-disabled-dark)",
-              }}
-            >
-              Archived
-            </IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-        <IonList lines="full">
-          {selectedFragment === "open" &&
-            openTickets.map((ticket: Ticket) => (
-              <div onClick={() => handleCardClick(ticket)} key={ticket.id}>
-                <PreviewTicketCard
-                  id={ticket.id}
-                  date={ticket.date}
-                  title={ticket.title}
-                  user={ticket.user}
-                  description={ticket.description}
-                  isArchived={ticket.archived}
-                />
-              </div>
-            ))}
-          {selectedFragment === "archived" &&
-            archivedTickets.map((ticket: Ticket) => (
-              <div onClick={() => handleCardClick(ticket)} key={ticket.id}>
-                <PreviewTicketCard
-                  id={ticket.id}
-                  date={ticket.date}
-                  title={ticket.title}
-                  user={ticket.user}
-                  description={ticket.description}
-                  isArchived={ticket.archived}
-                />
-              </div>
-            ))}
-        </IonList>
-        <IonInfiniteScroll
-          onIonInfinite={(ev) => {
-            // generateTickets();
-            setTimeout(() => ev.target.complete(), 400);
-          }}
-        >
-          <IonInfiniteScrollContent></IonInfiniteScrollContent>
-        </IonInfiniteScroll>
-        <IonModal
-          ref={modalRef}
-          isOpen={isModalOpen}
-          onDidDismiss={() => setIsModalOpen(false)}
-          breakpoints={[0, 0.5, 1]}
-          initialBreakpoint={1}
-          handleBehavior="cycle"
-          className="ticket-modal"
-        >
-          {selectedTicket && <TicketConversation ticket={selectedTicket} />}
-        </IonModal>
+        <IonGrid>
+          <IonRow className="ion-justify-content-center">
+            <IonCol size="8">
+              <IonSegment
+                value={selectedFragment}
+                onIonChange={(e) =>
+                  handleSegmentChange(e.detail.value as "open" | "archived")
+                }
+              >
+                <IonSegmentButton value="open">
+                  <IonLabel
+                    style={{
+                      "font-weight":
+                        selectedFragment === "open" ? "800" : "normal",
+                      "--color":
+                        selectedFragment === "open"
+                          ? "var(--ion-text-color) !important"
+                          : "var(--ion-color-disabled-dark)",
+                    }}
+                  >
+                    Open Tickets
+                  </IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="archived">
+                  <IonLabel
+                    style={{
+                      "font-weight":
+                        selectedFragment === "archived" ? "800" : "normal",
+                      "--color":
+                        selectedFragment === "archived"
+                          ? "var(--ion-text-color) !important"
+                          : "var(--ion-color-disabled-dark)",
+                    }}
+                  >
+                    Archived
+                  </IonLabel>
+                </IonSegmentButton>
+              </IonSegment>
+              <IonList lines="full">
+                {selectedFragment === "open" && openTickets.length === 0 ? (
+                  <IonItem className="ion-padding-horizontal" lines="none">
+                    <h3>No open tickets found 😎</h3>
+                  </IonItem>
+                ) : (
+                  selectedFragment === "open" &&
+                  openTickets.map((ticket: Ticket) => (
+                    <div
+                      onClick={() => handleCardClick(ticket)}
+                      key={ticket.id}
+                    >
+                      <PreviewTicketCard
+                        id={ticket.id}
+                        date={ticket.date}
+                        title={ticket.title}
+                        user={ticket.user}
+                        description={ticket.description}
+                        isArchived={ticket.archived}
+                      />
+                    </div>
+                  ))
+                )}
+                {selectedFragment === "archived" &&
+                archivedTickets.length === 0 ? (
+                  <IonItem className="ion-padding-horizontal" lines="none">
+                    <h3>No archived tickets found 😎</h3>
+                  </IonItem>
+                ) : (
+                  selectedFragment === "archived" &&
+                  archivedTickets.map((ticket: Ticket) => (
+                    <div
+                      onClick={() => handleCardClick(ticket)}
+                      key={ticket.id}
+                    >
+                      <PreviewTicketCard
+                        id={ticket.id}
+                        date={ticket.date}
+                        title={ticket.title}
+                        user={ticket.user}
+                        description={ticket.description}
+                        isArchived={ticket.archived}
+                      />
+                    </div>
+                  ))
+                )}
+              </IonList>
+              <IonInfiniteScroll
+                onIonInfinite={(ev) => {
+                  // generateTickets();
+                  setTimeout(() => ev.target.complete(), 400);
+                }}
+              >
+                <IonInfiniteScrollContent></IonInfiniteScrollContent>
+              </IonInfiniteScroll>
+              <IonModal
+                ref={modalRef}
+                isOpen={isModalOpen}
+                onDidDismiss={closeModal}
+                breakpoints={[0, 0.5, 1]}
+                initialBreakpoint={1}
+                handleBehavior="cycle"
+                className="ticket-modal"
+              >
+                {selectedTicket && (
+                  <TicketConversation
+                    onClose={closeModal}
+                    ticket={selectedTicket}
+                  />
+                )}
+              </IonModal>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );

@@ -50,6 +50,11 @@ h4 {
   line-height: 24px !important;
 }
 
+h5 {
+  font-size: 14px !important;
+  line-height: 22px !important;
+}
+
 p {
   font-size: 17px !important;
   line-height: 27px !important;
@@ -122,10 +127,6 @@ ion-input.message {
   font-weight: 300 !important;
 }
 
-/* ion-list.messages {
-  background-color: var(--ion-color-light) !important;
-} */
-
 ion-list.messages {
   margin: 0 !important;
   padding: 0 !important;
@@ -168,8 +169,10 @@ ion-card {
   box-shadow: none;
 }
 
-ion-text.timestamp {
-  font-size: small;
+ion-textarea.message-input {
+  --placeholder-opacity: 0.3;
+  --border-radius: 25px !important;
+  --placeholder-color: var(--ion-color-disabled-dark);
 }
 
 /* handles long word overflow */
@@ -189,4 +192,9 @@ ion-fab-button::part(native) {
 .ticket-modal {
   --background: black !important;
   --box-shadow: none;
+}
+
+ion-item.ticket-title {
+  display: flex;
+  align-items: center;
 }

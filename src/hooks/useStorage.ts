@@ -11,34 +11,33 @@ export default function useStorage() {
   useEffect(() => {
     // init storage on render
     const initStorage = async () => {
-      const newStore = new Storage({
-        name: "ownersdb",
-        driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
-      });
-      const store = await newStore.create();
-      setStore(store);
+      try {
+        const newStore = new Storage({
+          name: "ownersdb",
+          driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
+        });
+        const store = await newStore.create();
+        setStore(store);
 
-      let value = await store.get("tickets");
+        let value = await store.get("tickets");
 
-      if (!value) {
-        const response = await fetch("/src/utils/data.json");
-        const data = await response.json();
+        if (!value) {
+          const response = await fetch("/src/utils/data.json");
+          const data = await response.json();
 
-        await store.set("tickets", data.tickets);
-        value = data.tickets;
+          await store.set("tickets", data.tickets);
+          value = data.tickets;
+        }
+
+        setTickets(value);
+      } catch (error) {
+        console.error("Error initializing storage: ", error);
       }
-
-      setTickets(value);
     };
     initStorage();
   }, []);
 
   const createTicket = async (ticket: Ticket) => {
-    // setTickets((prevTickets: Ticket[]) => {
-    //   const updatedTickets = [...prevTickets, { ...ticket }];
-    //   store?.set("tickets", updatedTickets); // Store the updated tickets list
-    //   return updatedTickets; // Update state with the new tickets
-    // });
     setTickets((prevTickets) => [...prevTickets, ticket]);
 
     await store?.set("tickets", [...tickets, ticket]);
@@ -58,8 +57,6 @@ export default function useStorage() {
       setTickets(newTickets);
 
       await store?.set("tickets", newTickets);
-
-      console.log("new ticket is ", newTicket);
     } else {
       throw new Error("No ticket found !");
     }
@@ -67,7 +64,12 @@ export default function useStorage() {
 
   // read data from state and store in the storage
   const syncTickets = async () => {
-    await store?.set("tickets", tickets);
+    try {
+      const savedTickets = await store?.get("tickets");
+      setTickets(savedTickets);
+    } catch (error) {
+      console.error("Error syncing tickets: ", error);
+    }
   };
 
   const updateTicket = async (ticketId: string, ticket: Partial<Ticket>) => {
@@ -135,5 +137,6 @@ export default function useStorage() {
     updateTicket,
     emptyTickets,
     addMessage,
+    syncTickets,
   };
 }

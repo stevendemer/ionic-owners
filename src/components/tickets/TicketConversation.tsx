@@ -18,15 +18,25 @@ import {
   IonRow,
   IonTab,
   IonText,
+  IonTextarea,
   IonTitle,
   IonToggle,
   IonToolbar,
   useIonLoading,
+  useIonRouter,
+  useIonToast,
 } from "@ionic/react";
 import { Message, Ticket } from "../../types";
 import { RouteComponentProps, useParams } from "react-router";
 import useStorage from "../../hooks/useStorage";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import MessageItem from "./MessageItem";
 import {
   archiveOutline,
@@ -42,13 +52,23 @@ import {
 import { formatTime } from "../../utils/helpers";
 import { v4 as uuidv4 } from "uuid";
 
-export default function TicketConversation({ ticket }: { ticket: Ticket }) {
+export default function TicketConversation({
+  ticket,
+  onClose,
+}: {
+  ticket: Ticket;
+  onClose: () => void;
+}) {
   const [messages, setMessages] = useState<Message[]>([]);
-  const { getTicket, tickets, addMessage } = useStorage();
+  const { getTicket, tickets, addMessage, archiveTicket, syncTickets } =
+    useStorage();
   const [newMessage, setNewMessage] = useState("");
   const [showText, setShowText] = useState(false);
   const contentRef = useRef<HTMLIonContentElement>(null);
   const [present, dismiss] = useIonLoading();
+  const [presentToast] = useIonToast();
+
+  const formatedTime = formatTime(ticket.date);
 
   useEffect(() => {
     async function fetchMessages() {
@@ -70,7 +90,7 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
     if (newMessage.trim() === "") return;
 
     present({
-      message: "Sending message...",
+      spinner: "crescent",
     });
 
     const message: Message = {
@@ -86,7 +106,11 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
       await addMessage(ticket.id, message);
       setNewMessage("");
 
-      dismiss();
+      presentToast({
+        message: "Reply sent",
+        duration: 900,
+        position: "top",
+      });
     }
   };
 
@@ -94,7 +118,7 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
     <>
       <IonToolbar>
         <IonGrid>
-          <IonRow className="ion-justify-content-start ion-align-items-center">
+          <IonRow className=" ion-align-items-center">
             <IonCol sizeLg="4" size="8">
               <IonList>
                 <IonItem className="ion-no-padding" lines="none">
@@ -107,13 +131,26 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
                     <IonIcon icon={chatbubbleEllipsesOutline}></IonIcon>
                   </IonButton>
                   <h3>&#35;{ticket.id}</h3>
-                  <IonText
-                    color="medium"
-                    className="timestamp ion-padding-start"
-                  >
-                    {ticket?.date && formatTime(ticket?.date)}
+                  <IonText color="medium" className="ion-padding-start">
+                    {formatedTime}
                   </IonText>
-                  <IonButton fill="clear" slot="end" size="large">
+                  <IonButton
+                    onClick={() => {
+                      if (!ticket.archived) {
+                        archiveTicket(ticket.id);
+                        presentToast({
+                          message: "Ticket archived",
+                          duration: 900,
+                          position: "top",
+                        });
+
+                        onClose();
+                      }
+                    }}
+                    fill="clear"
+                    slot="end"
+                    size="large"
+                  >
                     <IonIcon
                       icon={ticket.archived ? syncOutline : checkmarkOutline}
                       size="large"
@@ -122,7 +159,20 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
                   </IonButton>
                 </IonItem>
                 <IonItem className="ion-no-padding" lines="none">
-                  <IonButton size="large" slot="start" fill="clear">
+                  <IonButton
+                    onClick={() => {
+                      syncTickets();
+                      presentToast({
+                        message: "Syncing tickets",
+                        duration: 900,
+                        position: "top",
+                      });
+                      window.location.reload();
+                    }}
+                    size="large"
+                    slot="start"
+                    fill="clear"
+                  >
                     <IonIcon
                       icon={ticket?.archived ? archiveOutline : repeatOutline}
                     ></IonIcon>
@@ -159,7 +209,7 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
         </IonGrid>
       </IonToolbar>
       <IonContent ref={contentRef} fullscreen>
-        <IonList lines="none">
+        <IonList inset lines="none">
           {messages.map((message) => (
             <IonGrid key={message.message_id}>
               <IonRow>
@@ -188,16 +238,13 @@ export default function TicketConversation({ ticket }: { ticket: Ticket }) {
           </p>
         </IonItem>
       ) : (
-        <IonItem lines="none">
-          <IonInput
+        <IonItem className="ion-no-padding" lines="none">
+          <IonTextarea
+            spellCheck
+            className="message-input"
             maxlength={100}
             minlength={2}
             autoFocus
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleNewMessage();
-              }
-            }}
             onIonChange={(e) => {
               setNewMessage(e.detail.value!);
             }}
