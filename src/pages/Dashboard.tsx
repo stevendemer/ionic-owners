@@ -17,6 +17,7 @@ import {
   IonRow,
   IonSegment,
   IonSegmentButton,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonRouter,
@@ -27,62 +28,22 @@ import {
 } from "@ionic/react";
 import { Children, useCallback, useEffect, useState } from "react";
 import { Ticket } from "../types";
-import { addOutline, arrowBackOutline } from "ionicons/icons";
+import { addOutline, arrowBackOutline, ticket } from "ionicons/icons";
 import TicketCard from "../components/tickets/Card";
 import { useLocation } from "react-router";
 import useStorage from "../hooks/useStorage";
 
 export default function Dashboard() {
-  const [tickets, setTickets] = useState<any>([]);
   const [selectedFragment, setSelectedSegment] = useState<"open" | "archived">(
     "open"
   );
   const location = useLocation();
   const router = useIonRouter();
-  const { createTicket, tickets: storedTickets } = useStorage();
+  const { createTicket, tickets: savedTickets } = useStorage();
 
-  // generate random tickets (for testing)
-  const generateTickets = useCallback(async () => {
-    const newTickets = [] as Ticket[];
-
-    for (let i = 0; i < 100; i++) {
-      const newTicket = {
-        id: i.toString(),
-        date: new Date().toISOString(),
-        title: `Ticket ${i}`,
-        archived: i % 2 === 0,
-        status: i % 2 === 0 ? "archived" : "open",
-        conversation: [
-          {
-            from: "user",
-            message: `Message from user ${i}`,
-            message_id: i.toString(),
-            timestamp: new Date().toISOString(),
-          },
-        ],
-        description: `Description for ticket ${i}`,
-        user: {
-          name: "John Doe",
-          location: "New York",
-          profile_image: "assets/icon-only.png",
-        },
-      };
-
-      await createTicket(newTicket);
-
-      newTickets.push(newTicket);
-    }
-
-    // setTickets(storedTickets);
-    console.log("stored tickets are ", storedTickets);
-  }, []);
-
-  useEffect(() => {
-    // generateTickets();
-
-    // use the tickets in the storage
-    setTickets(storedTickets);
-  }, [storedTickets]);
+  useIonViewDidEnter(() => {
+    console.log("ionViewDidEnter event fired");
+  });
 
   useEffect(() => {
     // get the suffix of the current path
@@ -99,10 +60,8 @@ export default function Dashboard() {
     router.push(`/tickets/${value}`, "forward", "push");
   };
 
-  const openTickets = storedTickets.filter(
-    (ticket: Ticket) => !ticket.archived
-  );
-  const archivedTickets = storedTickets.filter(
+  const openTickets = savedTickets.filter((ticket: Ticket) => !ticket.archived);
+  const archivedTickets = savedTickets.filter(
     (ticket: Ticket) => ticket.archived
   );
 
@@ -110,19 +69,19 @@ export default function Dashboard() {
     <IonPage>
       <IonToolbar>
         <IonItem lines="none">
-          <IonButtons slot="start">
-            <IonButton
-              style={{
-                "--color": router.canGoBack()
-                  ? "var(--ion-color-text)"
-                  : "var(--ion-color-disabled)",
-              }}
-              onClick={() => router.goBack()}
-              slot="icon-only"
-            >
-              <IonIcon icon={arrowBackOutline} />
-            </IonButton>
-          </IonButtons>
+          <IonButton
+            style={{
+              "--color": router.canGoBack()
+                ? "var(--ion-color-text)"
+                : "var(--ion-color-disabled)",
+            }}
+            onClick={() => router.goBack()}
+            fill="clear"
+            className="ion-no-padding"
+            size="large"
+          >
+            <IonIcon icon={arrowBackOutline} />
+          </IonButton>
         </IonItem>
         <IonItem lines="none" className="ion-text-start">
           <IonLabel>
@@ -196,8 +155,8 @@ export default function Dashboard() {
         </IonList>
         <IonInfiniteScroll
           onIonInfinite={(ev) => {
-            generateTickets();
-            setTimeout(() => ev.target.complete(), 1200);
+            // generateTickets();
+            setTimeout(() => ev.target.complete(), 400);
           }}
         >
           <IonInfiniteScrollContent></IonInfiniteScrollContent>
