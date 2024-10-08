@@ -29,14 +29,7 @@ import {
 import { Message, Ticket } from "../../types";
 import { RouteComponentProps, useParams } from "react-router";
 import useStorage from "../../hooks/useStorage";
-import {
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageItem from "./MessageItem";
 import {
   archiveOutline,
@@ -111,6 +104,7 @@ export default function TicketConversation({
         duration: 900,
         position: "top",
       });
+      dismiss();
     }
   };
 

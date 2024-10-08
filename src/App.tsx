@@ -62,7 +62,6 @@ const App: React.FC<RouteComponentProps> = () => (
     <IonReactRouter>
       <Route exact path="/tickets/open" component={Dashboard} />
       <Route exact path="/tickets/archived" component={Dashboard} />
-      <Route exact path="/ticket/:id" component={TicketConversation} />
       <Redirect exact from="/" to="/tickets/open" />
     </IonReactRouter>
   </IonApp>
