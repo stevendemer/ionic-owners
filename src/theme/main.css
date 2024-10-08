@@ -163,9 +163,31 @@ ion-input.message-input {
   width: 100%;
 }
 
+ion-card {
+  border-radius: 16px !important;
+  box-shadow: none;
+}
+
+ion-text.timestamp {
+  font-size: small;
+  color: gray;
+}
+
 /* handles long word overflow */
 ion-text.message-item {
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
+}
+
+ion-fab-button::part(native) {
+  /* background-color: #ffff; */
+  --box-shadow: none;
+  --color: var(--ion-color-primary);
+  --background: transparent;
+}
+
+.ticket-modal {
+  --background: black !important;
+  --box-shadow: none;
 }

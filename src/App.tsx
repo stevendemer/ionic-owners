@@ -1,4 +1,4 @@
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps } from "react-router-dom";
 import {
   IonApp,
   IonIcon,
@@ -57,17 +57,13 @@ import Conversation from "./pages/Conversation";
 
 setupIonicReact();
 
-const App: React.FC = () => (
+const App: React.FC<RouteComponentProps> = () => (
   <IonApp>
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tickets/open" component={Dashboard} />
-          <Route exact path="/tickets/archived" component={Dashboard} />
-          <Route exact path="/ticket/:id" component={TicketConversation} />
-          <Redirect exact from="/" to="/tickets/open" />
-        </IonRouterOutlet>
-      </IonTabs>
+      <Route exact path="/tickets/open" component={Dashboard} />
+      <Route exact path="/tickets/archived" component={Dashboard} />
+      <Route exact path="/ticket/:id" component={TicketConversation} />
+      <Redirect exact from="/" to="/tickets/open" />
     </IonReactRouter>
   </IonApp>
 );

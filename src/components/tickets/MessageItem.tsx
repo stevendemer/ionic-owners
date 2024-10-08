@@ -21,6 +21,8 @@ export default function MessageItem({
   isUser?: boolean;
 }) {
   return (
-    <IonText className="ion-text-wrap message-item">{message.message}</IonText>
+    <IonText className="ion-text-wrap message-item ion-padding-vertical">
+      {message.message}
+    </IonText>
   );
 }

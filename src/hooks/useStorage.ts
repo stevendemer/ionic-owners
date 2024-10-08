@@ -34,11 +34,14 @@ export default function useStorage() {
   }, []);
 
   const createTicket = async (ticket: Ticket) => {
-    setTickets((prevTickets: Ticket[]) => {
-      const updatedTickets = [...prevTickets, { ...ticket }];
-      store?.set("tickets", updatedTickets); // Store the updated tickets list
-      return updatedTickets; // Update state with the new tickets
-    });
+    // setTickets((prevTickets: Ticket[]) => {
+    //   const updatedTickets = [...prevTickets, { ...ticket }];
+    //   store?.set("tickets", updatedTickets); // Store the updated tickets list
+    //   return updatedTickets; // Update state with the new tickets
+    // });
+    setTickets((prevTickets) => [...prevTickets, ticket]);
+
+    await store?.set("tickets", [...tickets, ticket]);
   };
 
   const addMessage = async (ticketId: string, message: Message) => {
@@ -118,8 +121,8 @@ export default function useStorage() {
     return savedTickets?.find((ticket: Ticket) => ticket.id === id);
   };
 
-  const getTickets = async () => {
-    return await store?.get("tickets");
+  const getTickets = () => {
+    return tickets;
   };
 
   return {

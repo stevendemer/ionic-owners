@@ -13,6 +13,7 @@ import {
   IonItemDivider,
   IonLabel,
   IonList,
+  IonModal,
   IonPage,
   IonRow,
   IonSegment,
@@ -26,12 +27,13 @@ import {
   useIonViewWillEnter,
   useIonViewWillLeave,
 } from "@ionic/react";
-import { Children, useCallback, useEffect, useState } from "react";
+import { Children, useCallback, useEffect, useRef, useState } from "react";
 import { Ticket } from "../types";
 import { addOutline, arrowBackOutline, ticket } from "ionicons/icons";
-import TicketCard from "../components/tickets/Card";
 import { useLocation } from "react-router";
 import useStorage from "../hooks/useStorage";
+import PreviewTicketCard from "../components/tickets/PreviewTicketCard";
+import TicketConversation from "../components/tickets/TicketConversation";
 
 export default function Dashboard() {
   const [selectedFragment, setSelectedSegment] = useState<"open" | "archived">(
@@ -40,10 +42,9 @@ export default function Dashboard() {
   const location = useLocation();
   const router = useIonRouter();
   const { createTicket, tickets: savedTickets } = useStorage();
-
-  useIonViewDidEnter(() => {
-    console.log("ionViewDidEnter event fired");
-  });
+  const modalRef = useRef<HTMLIonModalElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
   useEffect(() => {
     // get the suffix of the current path
@@ -57,7 +58,7 @@ export default function Dashboard() {
 
   const handleSegmentChange = (value: "open" | "archived") => {
     setSelectedSegment(value);
-    router.push(`/tickets/${value}`, "forward", "push");
+    router.push(`/tickets/${value}`);
   };
 
   const openTickets = savedTickets.filter((ticket: Ticket) => !ticket.archived);
@@ -65,30 +66,43 @@ export default function Dashboard() {
     (ticket: Ticket) => ticket.archived
   );
 
+  const handleCardClick = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setIsModalOpen(true);
+  };
+
   return (
     <IonPage>
       <IonToolbar>
-        <IonItem lines="none">
-          <IonButton
-            style={{
-              "--color": router.canGoBack()
-                ? "var(--ion-color-text)"
-                : "var(--ion-color-disabled)",
-            }}
-            onClick={() => router.goBack()}
-            fill="clear"
-            className="ion-no-padding"
-            size="large"
-          >
-            <IonIcon icon={arrowBackOutline} />
-          </IonButton>
-        </IonItem>
-        <IonItem lines="none" className="ion-text-start">
-          <IonLabel>
-            <h2>House manager assistance</h2>
-          </IonLabel>
-          <IonIcon color="primary" icon={addOutline} />
-        </IonItem>
+        <IonGrid>
+          <IonRow className="ion-justify-content-center">
+            <IonCol sizeSm="12" sizeLg="7" offsetLg="1" sizeMd="7">
+              <IonItem lines="none">
+                <IonButton
+                  style={{
+                    "--color": router.canGoBack()
+                      ? "var(--ion-color-text)"
+                      : "var(--ion-color-disabled)",
+                  }}
+                  onClick={() => router.goBack()}
+                  fill="clear"
+                  className="ion-no-padding"
+                  size="large"
+                >
+                  <IonIcon icon={arrowBackOutline} />
+                </IonButton>
+              </IonItem>
+              <IonItem lines="none" className="ion-text-start">
+                <IonLabel>
+                  <h2>House manager assistance</h2>
+                </IonLabel>
+                <IonButton size="large" color="primary" fill="clear">
+                  <IonIcon icon={addOutline} />
+                </IonButton>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonToolbar>
       <IonContent>
         <IonSegment
@@ -128,8 +142,8 @@ export default function Dashboard() {
         <IonList lines="full">
           {selectedFragment === "open" &&
             openTickets.map((ticket: Ticket) => (
-              <div key={ticket.id}>
-                <TicketCard
+              <div onClick={() => handleCardClick(ticket)} key={ticket.id}>
+                <PreviewTicketCard
                   id={ticket.id}
                   date={ticket.date}
                   title={ticket.title}
@@ -141,8 +155,8 @@ export default function Dashboard() {
             ))}
           {selectedFragment === "archived" &&
             archivedTickets.map((ticket: Ticket) => (
-              <div key={ticket.id}>
-                <TicketCard
+              <div onClick={() => handleCardClick(ticket)} key={ticket.id}>
+                <PreviewTicketCard
                   id={ticket.id}
                   date={ticket.date}
                   title={ticket.title}
@@ -161,6 +175,17 @@ export default function Dashboard() {
         >
           <IonInfiniteScrollContent></IonInfiniteScrollContent>
         </IonInfiniteScroll>
+        <IonModal
+          ref={modalRef}
+          isOpen={isModalOpen}
+          onDidDismiss={() => setIsModalOpen(false)}
+          breakpoints={[0, 0.5, 1]}
+          initialBreakpoint={1}
+          handleBehavior="cycle"
+          className="ticket-modal"
+        >
+          {selectedTicket && <TicketConversation ticket={selectedTicket} />}
+        </IonModal>
       </IonContent>
     </IonPage>
   );
