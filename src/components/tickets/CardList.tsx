@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { IonContent, IonList } from "@ionic/react";
-import Card from "./Card";
-import { CardProps } from "./Card";
+import PreviewTicketCard from "./PreviewTicketCard";
+import { CardProps } from "./PreviewTicketCard";
 
 const CardList = ({ cards }: { cards: CardProps[] }) => {
   return (
     <IonContent>
       <IonList>
         {cards.map((card) => (
-          <Card
+          <PreviewTicketCard
             key={card.id}
             id={card.id}
             date={card.date}

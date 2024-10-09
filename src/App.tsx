@@ -57,7 +57,7 @@ import Conversation from "./pages/Conversation";
 
 setupIonicReact();
 
-const App: React.FC<RouteComponentProps> = () => (
+const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <Route exact path="/tickets/open" component={Dashboard} />
