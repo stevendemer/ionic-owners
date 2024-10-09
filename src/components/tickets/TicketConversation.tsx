@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonAvatar,
   IonButton,
   IonCol,
@@ -112,8 +113,8 @@ export default function TicketConversation({
     <>
       <IonToolbar>
         <IonGrid>
-          <IonRow className=" ion-align-items-center">
-            <IonCol sizeLg="4" size="8">
+          <IonRow className="ion-align-items-center">
+            <IonCol size="8">
               <IonList>
                 <IonItem className="ion-no-padding" lines="none">
                   <IonButton
@@ -128,32 +129,36 @@ export default function TicketConversation({
                   <IonText color="medium" className="ion-padding-start">
                     {formatedTime}
                   </IonText>
-                  <IonButton
-                    onClick={() => {
-                      if (!ticket.archived) {
-                        archiveTicket(ticket.id);
-                        presentToast({
-                          message: "Ticket archived",
-                          duration: 900,
-                          position: "top",
-                        });
+                  {!ticket.archived && (
+                    <IonButton
+                      // onClick={() => {
+                      //   if (!ticket.archived) {
+                      //     archiveTicket(ticket.id);
+                      //     presentToast({
+                      //       message: "Ticket archived",
+                      //       duration: 900,
+                      //       position: "top",
+                      //     });
 
-                        onClose();
-                      }
-                    }}
-                    fill="clear"
-                    slot="end"
-                    size="large"
-                  >
-                    <IonIcon
-                      icon={ticket.archived ? syncOutline : checkmarkOutline}
+                      //     onClose();
+                      //   }
+                      // }}
+                      fill="clear"
+                      slot="end"
                       size="large"
-                      color="primary"
-                    />
-                  </IonButton>
+                      id="archive-ticket"
+                    >
+                      <IonIcon
+                        icon={ticket.archived ? syncOutline : checkmarkOutline}
+                        size="large"
+                        color="primary"
+                      />
+                    </IonButton>
+                  )}
                 </IonItem>
                 <IonItem className="ion-no-padding" lines="none">
                   <IonButton
+                    id="archive-button"
                     onClick={() => {
                       syncTickets();
                       presentToast({
@@ -175,7 +180,9 @@ export default function TicketConversation({
                     {ticket?.archived ? "archive" : "open ticket"}
                   </h3>
                 </IonItem>
-                <h4 className="ion-padding-horizontal">{ticket?.title}</h4>
+                <IonItem lines="none">
+                  <h4 className="">{ticket?.title}</h4>
+                </IonItem>
                 <IonItem lines="none">
                   <IonText>{ticket?.description}</IonText>
                   <IonButton
@@ -203,19 +210,19 @@ export default function TicketConversation({
         </IonGrid>
       </IonToolbar>
       <IonContent ref={contentRef} fullscreen>
-        <IonList inset lines="none">
+        <IonList className="ion-no-padding" color="light" lines="none">
           {messages.map((message) => (
             <IonGrid key={message.message_id}>
               <IonRow>
                 {message.from !== "John" ? (
-                  <IonCol sizeLg="3" sizeXs="7">
-                    <IonItem color="primary">
+                  <IonCol className="ion-no-padding" sizeLg="5" sizeXs="7">
+                    <IonItem color="secondary">
                       <MessageItem isUser={true} message={message} />
                     </IonItem>
                   </IonCol>
                 ) : (
                   <IonCol sizeLg="6" sizeXs="7" offsetXs="1" offsetLg="2">
-                    <IonItem color="light">
+                    <IonItem>
                       <MessageItem isUser={false} message={message} />
                     </IonItem>
                   </IonCol>
@@ -224,6 +231,35 @@ export default function TicketConversation({
             </IonGrid>
           ))}
         </IonList>
+        <IonAlert
+          onDidDismiss={({ detail }) => {
+            console.log("dimissed with role", detail.role);
+          }}
+          header="Archive ticket"
+          trigger="archive-ticket"
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => {
+                console.log("Alert cancelled");
+              },
+            },
+            {
+              text: "Confirm",
+              role: "confirm",
+              handler: () => {
+                archiveTicket(ticket.id);
+                presentToast({
+                  message: "Ticket archived",
+                  duration: 900,
+                  position: "top",
+                });
+                onClose();
+              },
+            },
+          ]}
+        ></IonAlert>
       </IonContent>
       {ticket?.archived ? (
         <IonItem lines="none">
@@ -232,7 +268,7 @@ export default function TicketConversation({
           </p>
         </IonItem>
       ) : (
-        <IonItem className="ion-no-padding" lines="none">
+        <IonItem lines="none">
           <IonTextarea
             spellCheck
             className="message-input"

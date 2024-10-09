@@ -85,7 +85,7 @@ export default function Dashboard() {
       <IonToolbar>
         <IonGrid>
           <IonRow className="ion-justify-content-center">
-            <IonCol sizeSm="12" sizeLg="7" offsetLg="1" sizeMd="7">
+            <IonCol sizeLg="6" offsetLg="1" sizeMd="7">
               <IonItem lines="none">
                 <IonButton
                   style={{
@@ -152,56 +152,68 @@ export default function Dashboard() {
                   </IonLabel>
                 </IonSegmentButton>
               </IonSegment>
-              <IonList lines="full">
-                {selectedFragment === "open" && openTickets.length === 0 ? (
-                  <IonItem className="ion-padding-horizontal" lines="none">
-                    <h3>No open tickets found 😎</h3>
-                  </IonItem>
-                ) : (
-                  selectedFragment === "open" &&
-                  openTickets.map((ticket: Ticket) => (
-                    <div
-                      onClick={() => handleCardClick(ticket)}
-                      key={ticket.id}
-                    >
-                      <PreviewTicketCard
-                        id={ticket.id}
-                        date={ticket.date}
-                        title={ticket.title}
-                        user={ticket.user}
-                        description={ticket.description}
-                        isArchived={ticket.archived}
-                      />
-                    </div>
-                  ))
-                )}
-                {selectedFragment === "archived" &&
-                archivedTickets.length === 0 ? (
-                  <IonItem className="ion-padding-horizontal" lines="none">
-                    <h3>No archived tickets found 😎</h3>
-                  </IonItem>
-                ) : (
-                  selectedFragment === "archived" &&
-                  archivedTickets.map((ticket: Ticket) => (
-                    <div
-                      onClick={() => handleCardClick(ticket)}
-                      key={ticket.id}
-                    >
-                      <PreviewTicketCard
-                        id={ticket.id}
-                        date={ticket.date}
-                        title={ticket.title}
-                        user={ticket.user}
-                        description={ticket.description}
-                        isArchived={ticket.archived}
-                      />
-                    </div>
-                  ))
-                )}
-              </IonList>
+              <IonGrid>
+                <IonRow className="ion-justify-content-center">
+                  <IonCol sizeXl="4" offsetXl="1">
+                    <IonList lines="full">
+                      {selectedFragment === "open" &&
+                      openTickets.length === 0 ? (
+                        <IonItem
+                          className="ion-padding-horizontal"
+                          lines="none"
+                        >
+                          <h3>No open tickets found 😎</h3>
+                        </IonItem>
+                      ) : (
+                        selectedFragment === "open" &&
+                        openTickets.map((ticket: Ticket) => (
+                          <div
+                            onClick={() => handleCardClick(ticket)}
+                            key={ticket.id}
+                          >
+                            <PreviewTicketCard
+                              id={ticket.id}
+                              date={ticket.date}
+                              title={ticket.title}
+                              user={ticket.user}
+                              description={ticket.description}
+                              isArchived={ticket.archived}
+                            />
+                          </div>
+                        ))
+                      )}
+                      {selectedFragment === "archived" &&
+                      archivedTickets.length === 0 ? (
+                        <IonItem
+                          className="ion-padding-horizontal"
+                          lines="none"
+                        >
+                          <h3>No archived tickets found 😎</h3>
+                        </IonItem>
+                      ) : (
+                        selectedFragment === "archived" &&
+                        archivedTickets.map((ticket: Ticket) => (
+                          <div
+                            onClick={() => handleCardClick(ticket)}
+                            key={ticket.id}
+                          >
+                            <PreviewTicketCard
+                              id={ticket.id}
+                              date={ticket.date}
+                              title={ticket.title}
+                              user={ticket.user}
+                              description={ticket.description}
+                              isArchived={ticket.archived}
+                            />
+                          </div>
+                        ))
+                      )}
+                    </IonList>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
               <IonInfiniteScroll
                 onIonInfinite={(ev) => {
-                  // generateTickets();
                   setTimeout(() => ev.target.complete(), 400);
                 }}
               >

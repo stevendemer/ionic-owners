@@ -169,10 +169,36 @@ ion-card {
   box-shadow: none;
 }
 
+ion-modal::part(backdrop) {
+  background: black !important;
+}
+
+ion-modal ion-toolbar {
+  --background: var(--ion-color-light) !important;
+}
+
+ion-modal ion-content {
+  --background: var(--ion-color-light) !important;
+}
+
+ion-modal ion-item {
+  --background: var(--ion-color-light) !important;
+  /* --background: black !important; */
+}
+
+ion-modal ion-page {
+  --background: var(--ion-color-light) !important;
+}
+
+ion-modal ion-text {
+  --background: var(--ion-color-light) !important;
+}
+
 ion-textarea.message-input {
-  --placeholder-opacity: 0.3;
-  --border-radius: 25px !important;
+  --placeholder-opacity: 0.3 !important;
+  --border-radius: 22px !important;
   --placeholder-color: var(--ion-color-disabled-dark);
+  padding: 16px 0 !important;
 }
 
 /* handles long word overflow */
